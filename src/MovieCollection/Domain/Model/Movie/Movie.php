@@ -35,6 +35,8 @@ class Movie implements JsonSerializable
 
     private int $vote_count;
 
+    private array $genres;
+
     public function jsonSerialize(): mixed
     {
         return [
@@ -50,7 +52,8 @@ class Movie implements JsonSerializable
             'title' => $this->title,
             'video' => $this->video,
             'vote_average' => $this->vote_average,
-            'vote_count' => $this->vote_count
+            'vote_count' => $this->vote_count,
+            'genres' => $this->genres
         ];
     }
 
@@ -362,6 +365,30 @@ class Movie implements JsonSerializable
     public function setVoteCount($vote_count)
     {
         $this->vote_count = $vote_count;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of genres
+     *
+     * @return  mixed
+     */
+    public function getGenres()
+    {
+        return $this->genres;
+    }
+
+    /**
+     * Set the value of genres
+     *
+     * @param   mixed  $genres  
+     *
+     * @return  self
+     */
+    public function setGenres($genres)
+    {
+        $this->genres = $genres;
 
         return $this;
     }

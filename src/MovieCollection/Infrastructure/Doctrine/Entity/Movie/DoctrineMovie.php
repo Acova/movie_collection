@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\MovieCollection\Infrastructure\Doctrine\Entity\Movie;
 
 use App\MovieCollection\Domain\Model\Movie\Movie;
+use App\MovieCollection\Infrastructure\Doctrine\Entity\Movie\DoctrineMovieGenre;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -13,8 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'movie')]
 class DoctrineMovie
 {
-    #[ORM\Column(name: 'movie_id', type: Types::INTEGER)]
     #[ORM\Id]
+    #[ORM\Column(name: 'movie_id', type: Types::INTEGER)]
     private int $movie_id;
 
     #[ORM\Column(name: 'is_adult', type: Types::BOOLEAN)]
@@ -53,6 +56,17 @@ class DoctrineMovie
     #[ORM\Column(name: 'vote_count', type: Types::INTEGER)]
     private int $vote_count;
 
+    #[ORM\ManyToMany(targetEntity: DoctrineMovieGenre::class, inversedBy: 'movies')]
+    #[ORM\JoinTable(name: 'movie_movie_genre')]
+    #[ORM\JoinColumn(name: 'movie_id', referencedColumnName: 'movie_id')]
+    #[ORM\InverseJoinColumn(name: 'genre_id', referencedColumnName: 'genre_id')]
+    private Collection $movie_genres;
+
+    public function __construct()
+    {
+        $this->movie_genres = new ArrayCollection();
+    }
+
     public function getMovieModel() : Movie
     {
         $movie = new Movie();
@@ -69,320 +83,200 @@ class DoctrineMovie
         $movie->setVideo($this->video);
         $movie->setVoteAverage($this->vote_average);
         $movie->setVoteCount($this->vote_count);
+        $movie->setGenres($this->getGenresModelArray());
         return $movie;
     }
 
-    /**
-     * Get the value of movie_id
-     *
-     * @return  mixed
-     */
-    public function getMovieId()
+    private function getGenresModelArray() {
+        $genres_array = $this->movie_genres->toArray();
+        
+        $genres_models_array = array_map(function($genre) {
+            return $genre->getMovieGenreModel();
+        }, $genres_array);
+
+        return $genres_models_array;
+    }
+
+    public function getMovieId(): ?int
     {
         return $this->movie_id;
     }
 
-    /**
-     * Set the value of movie_id
-     *
-     * @param   mixed  $movie_id  
-     *
-     * @return  self
-     */
-    public function setMovieId($movie_id)
+    public function setMovieId($movie_id): self
     {
         $this->movie_id = $movie_id;
 
         return $this;
     }
 
-    /**
-     * Get the value of is_adult
-     *
-     * @return  mixed
-     */
-    public function getIsAdult()
+    public function isIsAdult(): ?bool
     {
         return $this->is_adult;
     }
 
-    /**
-     * Set the value of is_adult
-     *
-     * @param   mixed  $is_adult  
-     *
-     * @return  self
-     */
-    public function setIsAdult($is_adult)
+    public function setIsAdult(bool $is_adult): self
     {
         $this->is_adult = $is_adult;
 
         return $this;
     }
 
-    /**
-     * Get the value of movie_backdrop_path
-     *
-     * @return  mixed
-     */
-    public function getMovieBackdropPath()
+    public function getMovieBackdropPath(): ?string
     {
         return $this->movie_backdrop_path;
     }
 
-    /**
-     * Set the value of movie_backdrop_path
-     *
-     * @param   mixed  $movie_backdrop_path  
-     *
-     * @return  self
-     */
-    public function setMovieBackdropPath($movie_backdrop_path)
+    public function setMovieBackdropPath(string $movie_backdrop_path): self
     {
         $this->movie_backdrop_path = $movie_backdrop_path;
 
         return $this;
     }
 
-    /**
-     * Get the value of original_language
-     *
-     * @return  mixed
-     */
-    public function getOriginalLanguage()
+    public function getOriginalLanguage(): ?string
     {
         return $this->original_language;
     }
 
-    /**
-     * Set the value of original_language
-     *
-     * @param   mixed  $original_language  
-     *
-     * @return  self
-     */
-    public function setOriginalLanguage($original_language)
+    public function setOriginalLanguage(string $original_language): self
     {
         $this->original_language = $original_language;
 
         return $this;
     }
 
-    /**
-     * Get the value of original_title
-     *
-     * @return  mixed
-     */
-    public function getOriginalTitle()
+    public function getOriginalTitle(): ?string
     {
         return $this->original_title;
     }
 
-    /**
-     * Set the value of original_title
-     *
-     * @param   mixed  $original_title  
-     *
-     * @return  self
-     */
-    public function setOriginalTitle($original_title)
+    public function setOriginalTitle(string $original_title): self
     {
         $this->original_title = $original_title;
 
         return $this;
     }
 
-    /**
-     * Get the value of overview
-     *
-     * @return  mixed
-     */
-    public function getOverview()
+    public function getOverview(): ?string
     {
         return $this->overview;
     }
 
-    /**
-     * Set the value of overview
-     *
-     * @param   mixed  $overview  
-     *
-     * @return  self
-     */
-    public function setOverview($overview)
+    public function setOverview(string $overview): self
     {
         $this->overview = $overview;
 
         return $this;
     }
 
-    /**
-     * Get the value of popularity
-     *
-     * @return  mixed
-     */
-    public function getPopularity()
+    public function getPopularity(): ?float
     {
         return $this->popularity;
     }
 
-    /**
-     * Set the value of popularity
-     *
-     * @param   mixed  $popularity  
-     *
-     * @return  self
-     */
-    public function setPopularity($popularity)
+    public function setPopularity(float $popularity): self
     {
         $this->popularity = $popularity;
 
         return $this;
     }
 
-    /**
-     * Get the value of poster_path
-     *
-     * @return  mixed
-     */
-    public function getPosterPath()
+    public function getPosterPath(): ?string
     {
         return $this->poster_path;
     }
 
-    /**
-     * Set the value of poster_path
-     *
-     * @param   mixed  $poster_path  
-     *
-     * @return  self
-     */
-    public function setPosterPath($poster_path)
+    public function setPosterPath(string $poster_path): self
     {
         $this->poster_path = $poster_path;
 
         return $this;
     }
 
-    /**
-     * Get the value of release_date
-     *
-     * @return  mixed
-     */
-    public function getReleaseDate()
+    public function getReleaseDate(): ?\DateTimeInterface
     {
         return $this->release_date;
     }
 
-    /**
-     * Set the value of release_date
-     *
-     * @param   mixed  $release_date  
-     *
-     * @return  self
-     */
-    public function setReleaseDate($release_date)
+    public function setReleaseDate(\DateTimeInterface $release_date): self
     {
         $this->release_date = $release_date;
 
         return $this;
     }
 
-    /**
-     * Get the value of title
-     *
-     * @return  mixed
-     */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * Set the value of title
-     *
-     * @param   mixed  $title  
-     *
-     * @return  self
-     */
-    public function setTitle($title)
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
 
-    /**
-     * Get the value of video
-     *
-     * @return  mixed
-     */
-    public function getVideo()
+    public function isVideo(): ?bool
     {
         return $this->video;
     }
 
-    /**
-     * Set the value of video
-     *
-     * @param   mixed  $video  
-     *
-     * @return  self
-     */
-    public function setVideo($video)
+    public function setVideo(bool $video): self
     {
         $this->video = $video;
 
         return $this;
     }
 
-    /**
-     * Get the value of vote_average
-     *
-     * @return  mixed
-     */
-    public function getVoteAverage()
+    public function getVoteAverage(): ?float
     {
         return $this->vote_average;
     }
 
-    /**
-     * Set the value of vote_average
-     *
-     * @param   mixed  $vote_average  
-     *
-     * @return  self
-     */
-    public function setVoteAverage($vote_average)
+    public function setVoteAverage(float $vote_average): self
     {
         $this->vote_average = $vote_average;
 
         return $this;
     }
 
-    /**
-     * Get the value of vote_count
-     *
-     * @return  mixed
-     */
-    public function getVoteCount()
+    public function getVoteCount(): ?int
     {
         return $this->vote_count;
     }
 
-    /**
-     * Set the value of vote_count
-     *
-     * @param   mixed  $vote_count  
-     *
-     * @return  self
-     */
-    public function setVoteCount($vote_count)
+    public function setVoteCount(int $vote_count): self
     {
         $this->vote_count = $vote_count;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, DoctrineMovieGenre>
+     */
+    public function getMovieGenres(): Collection
+    {
+        return $this->movie_genres;
+    }
+
+    public function addMovieGenre(DoctrineMovieGenre $movieGenre): self
+    {
+        if (!$this->movie_genres->contains($movieGenre)) {
+            $this->movie_genres[] = $movieGenre;
+        }
+
+        return $this;
+    }
+
+    public function removeMovieGenre(DoctrineMovieGenre $movieGenre): self
+    {
+        $this->movie_genres->removeElement($movieGenre);
+
+        return $this;
+    }
+
 }
 
 ?>

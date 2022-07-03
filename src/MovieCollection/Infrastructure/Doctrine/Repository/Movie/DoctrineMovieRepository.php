@@ -25,7 +25,7 @@ final class DoctrineMovieRepository implements MovieRepositoryInterface
             ->from(DoctrineMovie::class, 'm');
         
         $doctrineMovies = $queryBuilder->getQuery()->getResult();
-
+            
         $res = [];
         foreach($doctrineMovies as $doctrineMovie) {
             $res[] = $doctrineMovie->getMovieModel();
