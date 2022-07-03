@@ -1,3 +1,3 @@
 movieCollectionControllers:
-    resource: ../src/MovieCollection/Application/Api/
+    resource: ../src/MovieCollection/Infrastructure/Api/
     type: annotation

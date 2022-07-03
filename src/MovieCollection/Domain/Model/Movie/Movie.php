@@ -1,10 +1,13 @@
 <?php
 
-namespace App\MovieCollection\Domain\Entity;
+declare(strict_types=1);
+
+namespace App\MovieCollection\Domain\Model\Movie;
 
 use DateTime;
+use JsonSerializable;
 
-class Movie 
+class Movie implements JsonSerializable
 {
     private int $movie_id;
 
@@ -31,6 +34,25 @@ class Movie
     private float $vote_average;
 
     private int $vote_count;
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'movie_id' => $this->movie_id,
+            'is_adult' => $this->is_adult,
+            'movie_backdrop_path' => $this->movie_backdrop_path,
+            'original_language' => $this->original_language,
+            'original_title' => $this->original_title,
+            'overview' => $this->overview,
+            'popularity' => $this->popularity,
+            'poster_path' => $this->poster_path,
+            'release_date' => $this->release_date->format('Y-m-d'),
+            'title' => $this->title,
+            'video' => $this->video,
+            'vote_average' => $this->vote_average,
+            'vote_count' => $this->vote_count
+        ];
+    }
 
     /**
      * Get the value of movie_id

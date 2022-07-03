@@ -10,6 +10,12 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
+            MovieCollection:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/MovieCollection/Infrastructure/Doctrine/Entity'
+                prefix: 'App\MovieCollection\Infrastructure\Doctrine\Entity'
+                alias: MovieCollection
 
 when@test:
     doctrine:
