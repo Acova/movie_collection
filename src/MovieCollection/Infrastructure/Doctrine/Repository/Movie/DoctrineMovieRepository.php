@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\MovieCollection\Infrastructure\Doctrine\Repository;
+namespace App\MovieCollection\Infrastructure\Doctrine\Repository\Movie;
 
 use App\MovieCollection\Domain\Model\Movie\Movie;
 use App\MovieCollection\Domain\Repository\Movie\MovieRepositoryInterface;
-use App\MovieCollection\Infrastructure\Doctrine\Entity\DoctrineMovie;
+use App\MovieCollection\Infrastructure\Doctrine\Entity\Movie\DoctrineMovie;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class MovieDoctrineRepository implements MovieRepositoryInterface
+final class DoctrineMovieRepository implements MovieRepositoryInterface
 {
 
     public function __construct(private EntityManagerInterface $entityManager) 

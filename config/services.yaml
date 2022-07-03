@@ -22,7 +22,7 @@ services:
     # please note that last definitions always *replace* previous ones
 
     App\MovieCollection\Application\Movie\ListMovies:
-        $movieRepositoryInterface: '@App\MovieCollection\Infrastructure\Doctrine\Repository\MovieDoctrineRepository'
+        $movieRepositoryInterface: '@App\MovieCollection\Infrastructure\Doctrine\Repository\Movie\DoctrineMovieRepository'
 
     App\MovieCollection\Infrastructure\Api\:
         resource: '../src/MovieCollection/Infrastructure/Api'

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\MovieCollection\Infrastructure\Doctrine\Entity;
+namespace App\MovieCollection\Infrastructure\Doctrine\Entity\Movie;
 
 use App\MovieCollection\Domain\Model\Movie\Movie;
 use DateTime;
