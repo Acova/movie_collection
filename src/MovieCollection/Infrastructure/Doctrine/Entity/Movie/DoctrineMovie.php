@@ -87,6 +87,26 @@ class DoctrineMovie
         return $movie;
     }
 
+    public static function fromMovieModel(Movie $movie) : DoctrineMovie
+    {
+        $doctrineMovie = new DoctrineMovie();
+        $doctrineMovie->setMovieId($movie->getMovieId());
+        $doctrineMovie->setIsAdult($movie->getIsAdult());
+        $doctrineMovie->setMovieBackdropPath($movie->getMovieBackdropPath());
+        $doctrineMovie->setOriginalLanguage($movie->getOriginalLanguage());
+        $doctrineMovie->setOriginalTitle($movie->getOriginalTitle());
+        $doctrineMovie->setOverview($movie->getOverview());
+        $doctrineMovie->setPopularity($movie->getPopularity());
+        $doctrineMovie->setPosterPath($movie->getPosterPath());
+        $doctrineMovie->setReleaseDate($movie->getReleaseDate());
+        $doctrineMovie->setTitle($movie->getTitle());
+        $doctrineMovie->setVideo($movie->getVideo());
+        $doctrineMovie->setVoteAverage($movie->getVoteAverage());
+        $doctrineMovie->setVoteCount($movie->getVoteCount());
+
+        return $doctrineMovie;
+    }
+
     private function getGenresModelArray() {
         $genres_array = $this->movie_genres->toArray();
         
@@ -273,6 +293,13 @@ class DoctrineMovie
     public function removeMovieGenre(DoctrineMovieGenre $movieGenre): self
     {
         $this->movie_genres->removeElement($movieGenre);
+
+        return $this;
+    }
+
+    public function setMovieGenres(Collection $movieGenres): self
+    {
+        $this->movie_genres = $movieGenres;
 
         return $this;
     }

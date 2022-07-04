@@ -32,6 +32,14 @@ class DoctrineMovieGenre
         return $genre;
     }
 
+    public static function fromMovieGenreModel(MovieGenre $movieGenre) {
+        $doctrineMovieGenre = new DoctrineMovieGenre();
+        $doctrineMovieGenre->setGenreId($movieGenre->getGenreId());
+        $doctrineMovieGenre->setGenreName($movieGenre->getGenreName());
+
+        return $doctrineMovieGenre;
+    }
+
     public function __construct()
     {
         $this->movies = new ArrayCollection();
@@ -40,6 +48,13 @@ class DoctrineMovieGenre
     public function getGenreId(): ?int
     {
         return $this->genre_id;
+    }
+
+    public function setGenreId(int $genre_id): self
+    {
+        $this->genre_id = $genre_id;
+
+        return $this;
     }
 
     public function getGenreName(): ?string
