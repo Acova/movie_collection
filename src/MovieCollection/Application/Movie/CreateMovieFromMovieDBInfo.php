@@ -43,6 +43,8 @@ final class CreateMovieFromMovieDBInfo
         $movie->setGenres($movie_genres);
 
         $this->movieRepository->save($movie);
+
+        return $movie;
     }
 
     public function getMovieGenres($movieGenres) 
